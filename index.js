@@ -29,7 +29,7 @@ const linkAndText = (each) => {
  * @returns {{date: string, textList: []}}
  */
 const findUntilTableHeading = (tag, date, textList = []) => {
-  if (tag.classList && tag.classList[0] === "tableHeading") {
+  if (tag.classList && tag.classList.contains("tableHeading")) {
     return { date, textList };
   } else {
     if (
@@ -52,9 +52,7 @@ const findUntilTableHeading = (tag, date, textList = []) => {
   }
 };
 
-app.use(cors({
-  origin: 'https://easyku.in'
-}))
+app.use(cors())
 
 app.get("/", (req, res) => res.send("Hello World!"));
 
@@ -65,7 +63,7 @@ app.get("/results", async (req, res) => {
     .querySelectorAll("tr.tableHeading")
     .map(linkAndText)
     .filter((each) => each);
-  res.header(COMMON_HEADERS).json(results);
+  res.json(results);
 });
 
 app.get("/notifications", async (req, res) => {
@@ -77,6 +75,8 @@ app.get("/notifications", async (req, res) => {
     .filter((each) => each);
   res.json(notifications);
 });
+
+app.listen(3001, () => console.log("Example app listening on port 3000!"));
 
 // export 'app'
 module.exports = app;
