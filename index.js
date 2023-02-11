@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const axios = require("axios");
 const { parse } = require("node-html-parser");
+const cors = require('cors');
 
 const URLS = {
   results: "https://exams.keralauniversity.ac.in/Login/check8",
@@ -51,6 +52,10 @@ const findUntilTableHeading = (tag, date, textList = []) => {
   }
 };
 
+app.use(cors({
+  origin: 'https://easyku.in'
+}))
+
 app.get("/", (req, res) => res.send("Hello World!"));
 
 app.get("/results", async (req, res) => {
@@ -60,7 +65,7 @@ app.get("/results", async (req, res) => {
     .querySelectorAll("tr.tableHeading")
     .map(linkAndText)
     .filter((each) => each);
-  res.json(results);
+  res.header(COMMON_HEADERS).json(results);
 });
 
 app.get("/notifications", async (req, res) => {
