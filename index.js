@@ -8,6 +8,7 @@ const { parse } = require("node-html-parser");
 const { linkAndText } = require("./utils");
 const { URLS } = require("./constants");
 
+const port = process.env.PORT || 4201
 
 app.use(cors())
 
@@ -32,6 +33,10 @@ app.get("/notifications", async (req, res) => {
     .filter((each) => each);
   res.json(notifications);
 });
+
+app.listen(port, () => {
+  console.log(`Space App running locally on port ${port}`)
+})
 
 // export 'app'
 module.exports = app;
